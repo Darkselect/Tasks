@@ -17,7 +17,8 @@ public class ConstantValuesObject {
     public static final int LIFETIME_START_VALUE = 19;
     public static final int LIFETIME_END_VALUE = 20;
     public static final int INITIAL_HP = 0;
-    public static final int MAX_FISHES_AMOUNT = 50;
+    public static final int MAX_FISHES_AMOUNT_ALLOWED = 50;
+    public static final long MILLI_TIME_ALLOWED_TO_PROCESS_THE_FISHES = 50;
 
     public static final Queue<Fish> FISHES = new ConcurrentLinkedDeque<>();
     public static final Map<Integer, Queue<Fish>> X_TO_FISHES = new ConcurrentHashMap<>();

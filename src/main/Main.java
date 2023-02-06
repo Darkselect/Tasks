@@ -3,17 +3,16 @@ package main;
 import model.Fish;
 
 import static java.util.Objects.isNull;
-import static model.constant.ConstantValuesObject.AQUARIUM_INITIALIZER;
-import static model.constant.ConstantValuesObject.FISHES;
+import static model.constant.ConstantValuesObject.*;
 
 public class Main {
     public static void main(String[] args) {
         AQUARIUM_INITIALIZER.initialize();
 
-        long programStart = System.currentTimeMillis();
+        long programStartTimeStamp = System.currentTimeMillis();
 
         while (true) {
-            if (System.currentTimeMillis() - programStart >= 50) {
+            if (System.currentTimeMillis() - programStartTimeStamp >= MILLI_TIME_ALLOWED_TO_PROCESS_THE_FISHES) {
                 return ;
             }
 
@@ -23,7 +22,7 @@ public class Main {
                 continue;
             }
 
-            fish.setName("Fish " + fish.id + " thread");
+            fish.setName("Fish " + fish.getFishId() + " thread");
             fish.start();
         }
     }

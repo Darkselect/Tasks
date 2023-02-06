@@ -1,6 +1,8 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import model.enumeration.Gender;
 import model.enumeration.MovementDirection;
@@ -11,38 +13,35 @@ import static model.constant.ConstantValuesObject.*;
 
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
 public class Fish extends Thread {
-    public int id;
-    public Gender gender;
-    public int initialHp;
-    public int lifeTime;
-    public MovementDirection movementDirection;
-    public int x;
+    private int fishId;
+    private Gender gender;
+    private int initialHp;
+    private int lifeTime;
+    private MovementDirection movementDirection;
+    private int x;
 
     @Override
     public void run() {
-//        System.out.println("FISH_" + id + " is born!");
         System.out.println(this + " is born!");
 
         while (initialHp++ < lifeTime) {
-//            System.out.println("FISH_" + id + " with hp: " + initialHp);
             System.out.println(this + " is moving!");
 
             X_TO_FISHES.get(this.x).remove(this);
-            move();
-            verifyDirection();
+            this.move();
+            this.verifyDirectionAndCoordinates();
             X_TO_FISHES.get(this.x).add(this);
-
-//            optimization:
-//            e.g. if fish had 100 hp, it would try to reproduce itself 100 times. Instead, it would try it 20 times.
-//            if (initialHp % 5 != 0) {
-//                continue;
-//            }
 
 //            count number of partners; assume that each partner can create 1 fish
             long numOfPartners = X_TO_FISHES.get(this.x)
                     .stream()
-                    .filter(fish -> fish.gender == (this.gender == Gender.MALE ? Gender.FEMALE : Gender.MALE))
+                    .filter(otherFish -> {
+                        final Gender expectedGenderOfThePartner = this.gender == Gender.MALE ? Gender.FEMALE : Gender.MALE;
+                        return otherFish.gender == expectedGenderOfThePartner;
+                    })
                     .count();
 
             if (numOfPartners == 0) {
@@ -53,11 +52,10 @@ public class Fish extends Thread {
         }
 
         X_TO_FISHES.get(this.x).remove(this);
-//        System.out.println("FISH_" + id + " is about to die!");
         System.out.println(this + " is about to die!");
     }
 
-    private void verifyDirection() {
+    private void verifyDirectionAndCoordinates() {
         if (this.x < 0 && this.movementDirection == MovementDirection.LEFT) {
             this.movementDirection = MovementDirection.RIGHT;
             x = 0;
@@ -77,7 +75,8 @@ public class Fish extends Thread {
 
     private void reproduce(long numOfPartners) {
         for (long i = 0; i < numOfPartners; i++) {
-            if (FISHES.size() >= MAX_FISHES_AMOUNT) {
+//            prevent from OutOfMemoryError
+            if (FISHES.size() >= MAX_FISHES_AMOUNT_ALLOWED) {
                 return;
             }
 
@@ -93,11 +92,11 @@ public class Fish extends Thread {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Fish fish = (Fish) o;
-        return id == fish.id;
+        return fishId == fish.fishId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(fishId);
     }
 }

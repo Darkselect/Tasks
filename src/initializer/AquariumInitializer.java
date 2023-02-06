@@ -16,19 +16,19 @@ public class AquariumInitializer {
         IntStream.range(0, ConstantValuesObject.N.get())
                 .forEach(i -> {
                     Fish fish = FishFactory.create();
-                    fish.gender = Gender.MALE;
+                    fish.setGender(Gender.MALE);
 
                     FISHES.add(fish);
-                    X_TO_FISHES.get(fish.x).add(fish);
+                    X_TO_FISHES.get(fish.getX()).add(fish);
                 });
 
         IntStream.range(0, ConstantValuesObject.M.get())
                 .forEach(i -> {
                     Fish fish = FishFactory.create();
-                    fish.gender = Gender.FEMALE;
+                    fish.setGender(Gender.FEMALE);
 
                     FISHES.add(fish);
-                    X_TO_FISHES.get(fish.x).add(fish);
+                    X_TO_FISHES.get(fish.getX()).add(fish);
                 });
     }
 }
