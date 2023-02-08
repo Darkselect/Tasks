@@ -1,2 +1,2 @@
 # Fishes
-We wrote this assignment with Artem Popov (https://github.com/strBCL1) 
+I wrote this program with (https://github.com/strBCL1) 
